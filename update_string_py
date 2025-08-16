@@ -1,0 +1,8 @@
+# it updates a dictionary given a key and an update_value
+def update_dict(dictionary, key, update_value):
+    for k in dictionary:
+        if k == key:
+            dictionary[k] = update_value
+        elif isinstance(dictionary[k], dict):
+            update_dict(dictionary[k], key, update_value)
+    
