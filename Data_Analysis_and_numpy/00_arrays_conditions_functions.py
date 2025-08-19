@@ -60,3 +60,18 @@ a = np.arange(6)
 a_reshaped = a.reshape(3,2)
 print(f'Example array: {a}   ||  Reshaped Array: {a_reshaped}')
 print(f'Transpose a_reshaped (a_reshaped.transpose()): {a_reshaped.transpose()}')
+
+
+'''
+Adding new dimenision into pre existing matrixes
+'''
+a = np.array([1, 2, 3, 4, 5, 6, 7])
+print(f'\n\nOriginal array: {a}. Shape: {a.shape}')
+a2 = a[np.newaxis, :]
+print(f'Array with an extra dimension: {a2}. Shape: {a2.shape}')
+a3_column_vector = a[:,np.newaxis]
+print(f'Array converted into a column Array: {a3_column_vector}. Shape: {a3_column_vector.shape}')
+a4_column_axis = np.expand_dims(a,axis=1)
+print(f'Adding a column Axis: {a4_column_axis}. Shape: {a4_column_axis.shape}')
+a5_row_axis = np.expand_dims(a,axis=0)
+print(f'Adding a row Axis: {a5_row_axis}. Shape: {a5_row_axis.shape}')
