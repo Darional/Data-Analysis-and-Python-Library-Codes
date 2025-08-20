@@ -1,9 +1,12 @@
 import numpy as np
 
-#  We can add same lenght matrixes only using the + operator
+print('####### Array Operations and functions over matrixes ########')
+print('#############################################################')
+
 a = np.array([1, 2, 3, 4, 5])
 b = np.array([10, 3, 6, 8, 1], dtype=int)
 print(f'Array a: {a}   ||   Array b: {b}')
+#  We can add same lenght matrixes only using the + operator
 print(f'Sum of arrays using "a + b": {a + b}')
 print(f'Substraction of arrays using "a - b": {a - b}')
 print(f'Multiplication  of arrays using "a * b": {a * b}')
@@ -11,7 +14,6 @@ print(f'Logic functions "a < 3": {a<3}')
 help1 = np.array( [[1,1],[2,1]] )
 help2 = np.array( [[2,4],[3,4]] )
 print(f'multiplication of 2x2 arays:\n {help1 * help2}')
-
 #  Also we can sum all the matrix values without using for loop
 total_sum_a = a.sum()
 print(f'Sum of all the values of "a" array using a.sum(): {total_sum_a}')
@@ -25,8 +27,21 @@ print(f'New array c: \n{c}')
 print(f'Sum over axis=0 (column sums): {sum_ax0_c}, Max: {max_value1}, Min: {min_value1}')
 print(f'Sum over axis=1 (row sums):    {sum_ax1_c}, Max: {max_value2}, Min: {min_value2}\n\n')
 #  Yes, you can use trigonometical functions and divitions. 
-print(f'Trigonometrical funcion np.sin(c): {np.sin(c)}')
+print(f'Trigonometrical funcion np.sin(c): {np.sin(c)}\n')
 
+print('################### Modifying rows ##########################')
+print('#############################################################')
+
+'''
+Using functions over a row or column 
+'''
+arr = np.arange(1, 10).reshape(3, 3)
+print(f'Array previous applying a function: \n{arr}')
+print(f'\nDoing sum function over the row: {np.apply_along_axis(sum, axis=0, arr=arr)}\n\n') # axis = 1 is for a funcion applied vertically
+
+
+print('#################### Dot Product ############################')
+print('#############################################################')
 '''
 Dot Product
 
