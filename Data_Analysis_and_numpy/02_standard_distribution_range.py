@@ -26,7 +26,16 @@ def variance_manual(array, mean):
 
 Editor note: The variance calculated corresponds to the population. If we were calculating the variance from a sample, we have to divide
 the sum by n - 1 (n is the sample size), this is called the Bessel Correction and helps to avoid the bias arised when estimating
-from a reduced sample instead the entire populalation
+from a reduced sample instead the entire population
+
+
+##############
+# Covariance #
+##############
+The covariance studies the relation between 2 variables, x and y. It's calculated similar to variance, this means
+
+            Sum( ( x_i - x_mean ) * ( y_i - y_mean ) ) /(N-1)
+Where N is a sample from a population.
 '''
 
 mean_score = np.mean(scores)
@@ -42,3 +51,35 @@ Careful with you are working with a sample instead the entire population, in tha
 
 std_scores = np.std(scores) #  if Bessel Correction needed, then you can do np.std(scores, ddof=1)
 print(f"\nStandard deviation of scores: {std_scores}")
+
+
+
+'''
+Significance test for Pearson's correlation (t-test)
+----------------------------------------------------
+
+Formula:
+    t = r * sqrt(N - 2) / sqrt(1 - r^2)
+
+Where:
+    r  -> correlation coefficient
+    N  -> Sample size
+    t  -> t-statistic following Student's t-distribution
+          with df = N - 2 degrees of freedom
+
+Purpose:
+    Tests whether the observed correlation is statistically significant.
+    Null hypothesis (H0): r = 0  (no linear relationship)
+    Alternative (H1):    r ≠ 0  (linear relationship exists)
+
+
+Pearson's Correlation
+----------------------------------------------------
+
+Formula:
+    r_xy = Sum( (x_i - x_mean) * (y_i - y_mean) ) / sqrt( variance(x) * variance(y) )
+
+Where:
+    r_xy -> Correlation Coefficient for x and y
+        
+'''
