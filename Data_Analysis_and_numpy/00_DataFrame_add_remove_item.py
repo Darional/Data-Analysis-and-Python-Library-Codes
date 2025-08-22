@@ -97,3 +97,22 @@ print(f'\nAdding Seniority column:\n {df.head(10)}')
 df_most_seniority = df[df["Seniority"] > 3]
 best_paid = df_most_seniority.loc[df_most_seniority["Salary ($)"].idxmax(),["Age", "Salary ($)", "Job"]]
 print('The most paid employee is:\n',best_paid)
+
+
+
+print("\n -------- Cleaning Data ---------- \n")
+
+
+data = {'A':[2, 4, None, 8],
+        'B':[5, None, 7, 9],
+        'C':[12, 13, None, None]}
+df = pd.DataFrame(data)
+print(df.isnull(), '\n')  # isnull() return a DataFrame with Boolean Values
+df.dropna(inplace=True)  # erease all the rows that has None or Null values
+print(df,'\n')
+
+df = pd.DataFrame(data)
+df['A'].fillna(0, inplace=True)  # Fulfill the None fields with some value.
+df['B'].fillna(np.mean(df['B']), inplace=True)
+df.fillna(100, inplace=True)
+print(df)
