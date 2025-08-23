@@ -116,3 +116,29 @@ df['A'].fillna(0, inplace=True)  # Fulfill the None fields with some value.
 df['B'].fillna(np.mean(df['B']), inplace=True)
 df.fillna(100, inplace=True)
 print(df)
+
+
+print("\n\n -------- Handling Duplicates & Outliers ---------- ")
+
+data = {'Name': ['John', 'Anna', 'Peter', 'John', 'Anna', 'Jose'],
+        'Age': [16, 15, 13, 16, 15, 14],
+        'Grade': [9, 10, 7, 9, 10, 98]}
+df = pd.DataFrame(data)
+print(df.duplicated())
+df = df.drop_duplicates() # Drop the duplicated rows.
+print(df)
+
+# Calculating IQR for Grade
+Q1 = df['Grade'].quantile(0.25)
+Q3 = df['Grade'].quantile(0.75)
+IQR = Q3 - Q1
+upper_bound = Q3 + 1.5 * IQR
+lower_bound = Q1 - 1.5 * IQR
+print("Deleting outliers (Jose)")
+df_without_outliers = df[(df['Grade'] > lower_bound) & (df['Grade'] < upper_bound)]
+print(df_without_outliers)
+print("Or just changing with the median")
+median = df['Grade'].median()
+df['Grade'] = np.where((df['Grade'] < lower_bound) | (df['Grade'] > upper_bound), median, df['Grade'])
+print(df)
+
