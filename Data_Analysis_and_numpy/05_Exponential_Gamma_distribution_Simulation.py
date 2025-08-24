@@ -179,21 +179,132 @@ np.random.seed(seed=RANDOM_SEED)
 
 # Create the simulation enviroment and start the setup process
 env = simpy.Environment()
-env.process(setup(env, NUM_EMPLOYEES_1, NUM_EMPLOYEES_2, SUPPORT_TIME_1, SUPPORT_TIME_2, CUSTOMER_INTERVAL, verbose=True))
+env.process(setup(env, NUM_EMPLOYEES_1, NUM_EMPLOYEES_2, SUPPORT_TIME_1, SUPPORT_TIME_2, CUSTOMER_INTERVAL, verbose=False))
 
 # Execute
 env.run(until=SIM_TIME)
 
-print(f"\nClientes atendidos: {customers_handled}")
-print(f"\nTiempo total de simulación: {(time() - t0):6.4f} segundos\n\n")
+print(f"\nHandled Customers: {customers_handled}")
+print(f"\nSimulation Time: {(time() - t0):6.4f} segundos\n\n")
 NA = customers_handled / len(arrival_times) # Nivel de atención
-print(f"Cantidad de tickets creados:   {len(arrival_times)}") # cantidad tickets creados
-print(f"Cantidad de tickets resueltos: {customers_handled}") # cantidad tickets resueltos
-print(f"Nivel de atención:             {NA:5.3f}") # Nivel atención
+print(f"Tickets Created:   {len(arrival_times)}") # cantidad tickets creados
+print(f"Tickets Solved: {customers_handled}") # cantidad tickets resueltos
+print(f"Service levels:             {NA:5.3f}") # Nivel atención
 print(f"Leadtime:                      {np.mean(total_times):5.3f}") # leadtime
 
 plt.hist(total_times, bins=30, range=(0, 300))
-plt.ylabel('Frecuencia')
-plt.xlabel('Tiempo total de duración')
-plt.title('Histograma')
+plt.ylabel('Frequency')
+plt.xlabel('Total Duration')
+plt.title('Histogram')
+plt.show(block=False)
+
+
+plt.plot(total_times)
+plt.ylabel('Total Duration')
+plt.xlabel('Tickets')
+plt.title('Run chart')
+plt.show(block=False)
+
+print("###################################################################")
+print("#                                                                 #")
+print("#                       300 Simulations                           #")
+print("#                                                                 #")
+print("###################################################################")
+
+# Doing 300 Simulations of the process to do some Data Analysis
+
+
+tch = []  # Customes Handled
+tat = []  # Arrival times
+tNA = []  # Total Solved
+tLT = []  # Leadtime
+tST = []  # Support time
+tTT = []  # Total Time
+
+# Total Runs
+runs = 300
+
+t0 = time()
+tc = t0
+print(f"Doing {runs} runs of {SIM_TIME} minutes each")
+
+np.random.seed(seed=RANDOM_SEED) # Aplica la semilla para los objetos de scipy.stats
+
+for c in trange(runs):
+    # Initializing Data Acquisition
+    customers_handled = 0
+    arrival_times = []   
+    wait_times_1 = []    
+    wait_times_2 = []    
+    support_times_1 = [] 
+    support_times_2 = [] 
+    total_times = []     
+
+    print(f"\nSimulation {c}")
+    # Creating the Environment and set up
+    env = simpy.Environment()
+    env.process(setup(env, NUM_EMPLOYEES_1, NUM_EMPLOYEES_2, SUPPORT_TIME_1, SUPPORT_TIME_2, CUSTOMER_INTERVAL, verbose=False))
+
+    # executing!
+    env.run(until=SIM_TIME)
+
+    print(f"Customers Handled:            {customers_handled}")
+
+    # Answers
+    NA = customers_handled / len(arrival_times) # Customer Service
+    print(f"Tickets Created:   {len(arrival_times)}") # Tickets Created
+    print(f"Tickets Solved: {customers_handled}") # Tickets Solved
+    print(f"Service Level:             {NA:6.4f}") # Customer Service
+    print(f"Leadtime:                      {np.mean(total_times):4.2f}") # leadtime
+    tch.append(customers_handled)
+    tat.append(arrival_times)
+    tNA.append(NA)
+    tLT.append(np.mean(total_times))
+    tTT.append(total_times)
+    print(f"Simulation Time {c}: {(time() - tc):4.2f} seconds")
+    tc = time()
+print(f"Total Simulation Time: {(time() - t0):4.2f} seconds")
+
+# Getting the normal distribution
+q_created_2_2 = [len(i) for i in tat]
+q_resueltos_2_2 = tch
+service_level_2_2 = tNA
+leadtime_2_2 = tLT
+
+
+datasets = [
+    (q_created_2_2, 'Created Tickets per Day'),
+    (q_resueltos_2_2, 'Tickets Solved per Day'),
+    (service_level_2_2, 'Customer Service per Day'),
+    (leadtime_2_2, 'Leadtime (Mean) per Day')
+]
+
+fig, axes = plt.subplots(2, 2, figsize=(14, 8))
+axes = axes.flatten()
+
+alpha = 0.10
+NC = 1 - alpha
+Z = stats.norm.ppf(1 - alpha / 2)
+
+for idx, (data, title) in enumerate(datasets):
+    ax = axes[idx]
+
+    xbar = np.mean(data)
+    s = np.std(data, ddof=1)
+    n = len(data)
+
+    
+    LI = xbar - Z * np.std(data)
+    LS = xbar + Z * np.std(data)
+
+    f, b, _ = ax.hist(data, bins=20, color="#69b3a2", alpha=0.7, edgecolor="black")
+    ax.vlines(x=LI, ymin=0, ymax=max(f), color="red", linestyle="--", label="LI")
+    ax.vlines(x=LS, ymin=0, ymax=max(f), color="red", linestyle="--", label="LS")
+
+    ax.set_title(f"{title}\nMean={xbar:.2f} | CI=({LI:.2f}, {LS:.2f})")
+    ax.set_xlabel(title)
+    ax.set_ylabel("Frequency")
+    ax.legend()
+
+plt.tight_layout()
 plt.show()
