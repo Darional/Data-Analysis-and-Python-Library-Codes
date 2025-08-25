@@ -44,7 +44,7 @@ The simulated scenario has the following parameters.
         * Mean = 17.9 minutes (α*β)
     - Parameters of the Gamma Distribution for the time in Process #2:
         * α = 7
-        * β = 3.5  
+        * β = 3.5
         * Mean = 24.5 minutes
 The simulation time is going to be 8 hours (480 minutes), the measurements are going to be
     - Number of created Tickets in a Day
