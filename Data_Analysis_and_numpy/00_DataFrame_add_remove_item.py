@@ -142,3 +142,21 @@ median = df['Grade'].median()
 df['Grade'] = np.where((df['Grade'] < lower_bound) | (df['Grade'] > upper_bound), median, df['Grade'])
 print(df)
 
+
+
+print("\n\nLabel Encoding and One-Hot Encoding")
+
+data = {'ClothingType': ['T-shirt', 'Jeans', 'Sweater', 'T-shirt', 'Sweater'],
+        'Size': ['L', 'M', 'S', 'M', 'L']}
+
+df = pd.DataFrame(data)
+print(f"Data Frame before OneHot Encoding ( for ML models ) and Label Encoding: \n{df}")
+
+# Use one-hot encoding for ClothingType
+df_encoded = pd.get_dummies(df, columns=['ClothingType'])
+
+# Use label encoding for Size. Remember: S < M < L
+size_mapping = {'S': 1, 'M': 2, 'L': 3}
+df_encoded['Size'] = df_encoded['Size'].map(size_mapping)
+
+print(f'Data Frame after the Encoding: \n{df_encoded}')

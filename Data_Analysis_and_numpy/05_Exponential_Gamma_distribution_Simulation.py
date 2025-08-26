@@ -185,7 +185,7 @@ env.process(setup(env, NUM_EMPLOYEES_1, NUM_EMPLOYEES_2, SUPPORT_TIME_1, SUPPORT
 env.run(until=SIM_TIME)
 
 print(f"\nHandled Customers: {customers_handled}")
-print(f"\nSimulation Time: {(time() - t0):6.4f} segundos\n\n")
+print(f"\nSimulation Time: {(time() - t0):6.4f} seconds\n\n")
 NA = customers_handled / len(arrival_times) # Nivel de atención
 print(f"Tickets Created:   {len(arrival_times)}") # cantidad tickets creados
 print(f"Tickets Solved: {customers_handled}") # cantidad tickets resueltos
