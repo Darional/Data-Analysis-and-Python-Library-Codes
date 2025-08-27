@@ -160,3 +160,21 @@ size_mapping = {'S': 1, 'M': 2, 'L': 3}
 df_encoded['Size'] = df_encoded['Size'].map(size_mapping)
 
 print(f'Data Frame after the Encoding: \n{df_encoded}')
+
+
+
+print("\n\n -------- Binning Techniques ---------- ")
+"""
+Binning techniques are used to convert continuous data into categorical bins for easier analysis. You need a array containing the 
+limits of each bins and using pd.cut will group the data.
+"""
+
+df = pd.DataFrame({'ages': [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]})
+
+bins = [17, 25, 35, 60, 100]
+labels = ["Youth", "YoungAdult", "MiddleAged", "Senior"]
+df['categories'] = pd.cut(df['ages'], bins, labels=labels)
+# df['categories'] = pd.qcut(df['ages'], q=4, labels=labels)  # Categorize the column ages into equal-separated q categories 
+for category in set(df['categories']):
+    print(f"{category}: {list(df[df['categories'] == category]['ages'])}")
+print(f'\nComplete DataFrame:\n{df}')

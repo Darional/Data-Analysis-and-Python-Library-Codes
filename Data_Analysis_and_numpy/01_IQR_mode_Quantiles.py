@@ -73,3 +73,56 @@ scores = math_scores["Score"]
 outliers_scores = scores[(scores < Q1 - 1.5 * IQR_score) | (scores > Q3 + 1.5 * IQR_score)]
 
 print(f'\nThe Outliers values are: \n{outliers_scores}')
+
+
+"""
+Confidence interval
+
+Is a range of values that estimates where the true population parameter (mean, proportion, etc) is likely to fall. It reflects the uncertainty
+in using a sample to estimate a population value.
+  - The most common 95% CI meaning:
+      If we repeated the study many times, 95% of the calculated intervals would contain the true value
+  - A CI provides two limits:
+    * Lower Limit: minimum plausible value
+    * Upper Limit: maximum plausible value
+
+  - The formula is:
+                  X ± Z * (σ/sqrt(n))
+
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+np.random.seed(42)
+data = np.random.normal(loc=0.01, scale=0.04, size=120)  # Mean=1%, std=4%
+
+# Basic Parameters
+alpha = 0.05  # 99% confidence
+n = len(data)
+mean = np.mean(data)
+std = np.std(data, ddof=1)
+
+# Calculating CI (Using t distribution, σ unknown)
+# Let's calculate Z for a 95% of Confidence Interval (CI)
+#z = stats.norm.ppf(0.05/2, loc=0, scale=1) # Lower critical z-value for a 95% confidence interval (α=0.05)
+t = stats.t.ppf(1-alpha/2, df=n-1)  # t critical value used to build a (1 - alpha)% confidence interval for the mean
+error_margin = t *(std / np.sqrt(n))
+ci_lower = mean - error_margin
+ci_upper = mean + error_margin
+
+
+print(f"Mean: {mean:.4f}")
+print(f"Confidence Interval of 95%: [{ci_lower},{ci_upper}]")
+
+# Graph
+plt.figure(figsize=(8,5))
+plt.hist(data, bins=20, alpha=0.7, color="skyblue", edgecolor="black")
+plt.axvline(mean, color="red", linestyle="--", label="Mean Samples")
+plt.axvline(ci_lower, color="green", linestyle="--", label="Lower Limit CI 95%")
+plt.axvline(ci_upper, color="green", linestyle="--", label="Upper Limit CI 95%")
+plt.title("Confidence Interval of 95% for the mean")
+plt.xlabel("Item Production")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
