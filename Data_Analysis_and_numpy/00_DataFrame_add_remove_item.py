@@ -178,3 +178,26 @@ df['categories'] = pd.cut(df['ages'], bins, labels=labels)
 for category in set(df['categories']):
     print(f"{category}: {list(df[df['categories'] == category]['ages'])}")
 print(f'\nComplete DataFrame:\n{df}')
+
+
+
+print("\n\n -------- Merging DataFrames ---------- ")
+'''
+
+'''
+df_books = pd.DataFrame({
+     "Book_ID": [1, 2, 3, 4, 5],
+     "Book_Title": ['Gatsby', 'Mockingbird', '1984', 'Catcher', 'LOTR'],
+     "Author_ID": [101, 102, 103, None, 112],
+     "Genre": ['Fiction', 'Fiction', 'Fiction', 'Fiction', 'Fantasy']
+ })
+
+# creating the DataFrame for Authors
+df_authors = pd.DataFrame({
+    "Author_ID": [101, 102, 103, 104, 105],
+    "Author_Name": ['F. Fitzgerald', 'H. Lee', 'G. Orwell', 'J. Salinger', 'J. Tolkien'],
+    "Nationality": ['American', 'American', 'British', 'American', 'British']
+})
+
+merged_df = df_books.merge(df_authors, on="Author_ID", how="inner") # Type of joins: inner, outer, left and right. the parameter "on" is the common column
+print(merged_df)
