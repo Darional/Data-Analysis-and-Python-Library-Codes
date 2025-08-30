@@ -69,6 +69,11 @@ Practical use of DataFrames.
 
 '''
 # Setup
+print('################################################')
+print('#                                              #')
+print('#            Working with CSV                  #')
+print('#                                              #')
+print('################################################')
 np.random.seed(42)
 names = ["Ana", "Juan", "Marta", "Pedro", "Isabel", "Jorge", "Luisa", "Carlos", "Esther", "David"]
 lastNames = ["García", "López", "Martínez", "Rodríguez", "González", "Fernández", "Ruiz", "Ramirez", "Morales", "Torres"]
@@ -77,7 +82,7 @@ employees = {
     'Name': [f"{np.random.choice(names)} {np.random.choice(lastNames)}" for _ in range(100)],
     'Age': np.random.randint(20, 60, 100),
     'Salary ($)': np.random.randint(25000, 75000, 100),
-    'Hire Date': np.random.choice(hire_dates, 100),
+    'Hire Date': np.random.choice(hire_dates, 100), 
     'Job': np.random.choice(["Desarrollador", "Diseñador", "Gerente", "Analista"], 100)
 }
 df = pd.DataFrame(employees)
@@ -95,7 +100,7 @@ current_year = datetime.now().year
 df["Seniority"] = current_year - df["Hire Date"].dt.year
 print(f'\nAdding Seniority column:\n {df.head(10)}')
 df_most_seniority = df[df["Seniority"] > 3]
-best_paid = df_most_seniority.loc[df_most_seniority["Salary ($)"].idxmax(),["Age", "Salary ($)", "Job"]]
+best_paid = df_most_seniority.loc[df_most_seniority["Salary ($)"].idxmax(),["Age", "Salary ($)", "Job", "Seniority"]]
 print('The most paid employee is:\n',best_paid)
 
 
